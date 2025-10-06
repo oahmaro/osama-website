@@ -129,4 +129,26 @@
     color: #d1d5db; /* light gray */
   }
   
+  /* Custom subtle hover background for experience and language items */
+  .hover-bg-subtle:hover {
+    background-color: oklch(0.95 0 0); /* Very subtle light gray for light theme */
+  }
+  
+  .dark .hover-bg-subtle:hover {
+    background-color: oklch(0.15 0 0); /* Very subtle dark gray for dark theme */
+  }
+  
+  /* Darker base background for social media buttons in dark theme */
+  .dark .social-btn {
+    background-color: oklch(0.1 0 0) !important; /* Much darker base background for dark theme */
+  }
+  
+  /* Custom darker hover background for social media buttons */
+  .hover-bg-darker:hover {
+    background-color: oklch(0.95 0 0) !important; /* More noticeable darker gray for light theme */
+  }
+  
+  .dark .hover-bg-darker:hover {
+    background-color: oklch(0.2 0 0) !important; /* Lighter gray for dark theme hover */
+  }
 }
