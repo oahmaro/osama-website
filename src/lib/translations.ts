@@ -2,13 +2,13 @@
 export const translations = {
   en: {
     greeting: "Hi, I'm Osama Ahmaro",
-    title: "Senior Full Stack Engineer",
+    title: "Full Stack Engineer",
     description: "Experienced Full Stack Software Engineer with 6+ years delivering user-centric applications that scale. Led development of core products adopted by thousands of users. Expert in React ecosystem and modern web technologies, passionate about building efficient, scalable solutions that drive business impact.",
     experience: {
       title: "Experience",
       subtitle: "I have worked with some of the most innovative industry leaders to help build their top-notch products.",
       positions: {
-        senior: "Senior Full Stack Engineer",
+        senior: "Full Stack Engineer",
         fullstack: "Full Stack Engineer"
       },
       companies: {
@@ -41,7 +41,7 @@ export const translations = {
       title: "الخبرة",
       subtitle: "لقد عملت مع بعض من أكثر قادة الصناعة ابتكاراً لمساعدتهم في بناء منتجاتهم عالية الجودة.",
       positions: {
-        senior: "مهندس برمجيات متقدم",
+        senior: "مهندس برمجيات",
         fullstack: "مهندس برمجيات"
       },
       companies: {
@@ -74,7 +74,7 @@ export const translations = {
       title: "ניסיון",
       subtitle: "עבדתי עם כמה מהמנהיגים החדשניים ביותר בתעשייה כדי לעזור להם לבנות את המוצרים הטובים ביותר שלהם.",
       positions: {
-        senior: "מהנדס תוכנה בכיר",
+        senior: "מהנדס תוכנה",
         fullstack: "מהנדס תוכנה"
       },
       companies: {
