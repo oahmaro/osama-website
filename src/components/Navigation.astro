@@ -35,10 +35,10 @@ const t = navTranslations[locale as keyof typeof navTranslations] || navTranslat
       </div>
 
       <!-- Separator -->
-      <div class="nav-separator"></div>
+      <div class="nav-separator hidden md:block"></div>
 
       <!-- Navigation Links -->
-      <div class="flex items-center gap-6">
+      <div class="hidden md:flex items-center gap-6">
         <a href="#home" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.home}</a>
         <a href="#about" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.about}</a>
         <a href="#experience" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.experience}</a>
@@ -46,7 +46,7 @@ const t = navTranslations[locale as keyof typeof navTranslations] || navTranslat
       </div>
 
       <!-- Separator -->
-      <div class="nav-separator"></div>
+      <div class="nav-separator hidden md:block"></div>
 
       <!-- Language Switcher -->
       <div class="flex items-center gap-3">

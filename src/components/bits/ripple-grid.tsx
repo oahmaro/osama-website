@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
 
 type Props = {
@@ -6,6 +6,7 @@ type Props = {
   gridColor?: string;
   rippleIntensity?: number;
   gridSize?: number;
+  mobileGridSize?: number;
   gridThickness?: number;
   fadeDistance?: number;
   vignetteStrength?: number;
@@ -21,6 +22,7 @@ const RippleGrid: React.FC<Props> = ({
   gridColor,
   rippleIntensity = 0.05,
   gridSize = 10.0,
+  mobileGridSize,
   gridThickness = 15.0,
   fadeDistance = 1.5,
   vignetteStrength = 2.0,
@@ -35,6 +37,30 @@ const RippleGrid: React.FC<Props> = ({
   const targetMouseRef = useRef({ x: 0.5, y: 0.5 });
   const mouseInfluenceRef = useRef(0);
   const uniformsRef = useRef<any>(null);
+  
+  // State for responsive grid size
+  const [currentGridSize, setCurrentGridSize] = useState(gridSize);
+
+  // Handle responsive grid size
+  useEffect(() => {
+    const updateGridSize = () => {
+      if (mobileGridSize && window.innerWidth < 768) {
+        setCurrentGridSize(mobileGridSize);
+      } else {
+        setCurrentGridSize(gridSize);
+      }
+    };
+
+    // Set initial grid size
+    updateGridSize();
+
+    // Add resize listener
+    window.addEventListener('resize', updateGridSize);
+    
+    return () => {
+      window.removeEventListener('resize', updateGridSize);
+    };
+  }, [gridSize, mobileGridSize]);
 
   // Get theme-aware values
   const getThemeValues = () => {
@@ -67,7 +93,7 @@ const RippleGrid: React.FC<Props> = ({
         rippleIntensity: rippleIntensity * 0.4,
         opacity: opacity * 0.2,
         glowIntensity: glowIntensity * 0.1,
-        gridThickness: gridThickness * 16
+        gridThickness: gridThickness * 4
       };
     }
   };
@@ -201,7 +227,7 @@ void main() {
       enableRainbow: { value: enableRainbow },
       gridColor: { value: hexToRgb(themeValues.gridColor) },
       rippleIntensity: { value: themeValues.rippleIntensity },
-      gridSize: { value: gridSize },
+      gridSize: { value: currentGridSize },
       gridThickness: { value: themeValues.gridThickness },
       fadeDistance: { value: fadeDistance },
       vignetteStrength: { value: vignetteStrength },
@@ -315,7 +341,7 @@ void main() {
     uniformsRef.current.enableRainbow.value = enableRainbow;
     uniformsRef.current.gridColor.value = hexToRgb(themeValues.gridColor);
     uniformsRef.current.rippleIntensity.value = themeValues.rippleIntensity;
-    uniformsRef.current.gridSize.value = gridSize;
+    uniformsRef.current.gridSize.value = currentGridSize;
     uniformsRef.current.gridThickness.value = themeValues.gridThickness;
     uniformsRef.current.fadeDistance.value = fadeDistance;
     uniformsRef.current.vignetteStrength.value = vignetteStrength;
@@ -328,7 +354,7 @@ void main() {
     enableRainbow,
     gridColor,
     rippleIntensity,
-    gridSize,
+    currentGridSize,
     gridThickness,
     fadeDistance,
     vignetteStrength,
