@@ -1,0 +1,283 @@
+---
+// Navigation component with language switcher and theme toggle
+const locale = Astro.currentLocale || 'en';
+
+const navTranslations = {
+  en: {
+    home: "Home",
+    about: "About",
+    experience: "Experience",
+    contact: "Contact"
+  },
+  ar: {
+    home: "الرئيسية",
+    about: "نبذة",
+    experience: "الخبرة",
+    contact: "تواصل"
+  },
+  he: {
+    home: "בית",
+    about: "אודות",
+    experience: "ניסיון",
+    contact: "צור קשר"
+  }
+};
+
+const t = navTranslations[locale as keyof typeof navTranslations] || navTranslations.en;
+---
+
+<nav class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50" id="main-nav">
+  <div class="bg-background/80 backdrop-blur-md border border-border rounded-full px-6 py-3 shadow-lg nav-container">
+    <div class="flex items-center gap-8">
+      <!-- Logo/Name -->
+      <div class="text-foreground font-bold text-lg">
+        OA
+      </div>
+
+      <!-- Separator -->
+      <div class="nav-separator"></div>
+
+      <!-- Navigation Links -->
+      <div class="flex items-center gap-6">
+        <a href="#home" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.home}</a>
+        <a href="#about" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.about}</a>
+        <a href="#experience" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.experience}</a>
+        <a href="#contact" class="nav-link text-muted-foreground hover:text-foreground transition-colors duration-200">{t.contact}</a>
+      </div>
+
+      <!-- Separator -->
+      <div class="nav-separator"></div>
+
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-3">
+        <a href="/ar/" class="lang-btn text-sm px-3 py-1.5 rounded transition-colors duration-200" data-lang="ar" id="lang-ar">ع</a>
+        <a href="/" class="lang-btn text-sm px-3 py-1.5 rounded transition-colors duration-200" data-lang="en" id="lang-en">EN</a>
+        <a href="/he/" class="lang-btn text-sm px-3 py-1.5 rounded transition-colors duration-200" data-lang="he" id="lang-he">ע</a>
+      </div>
+
+      <!-- Separator -->
+      <div class="nav-separator"></div>
+
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="p-2 rounded-lg transition-colors duration-200">
+        <svg id="sun-icon" class="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg id="moon-icon" class="w-5 h-5 text-foreground hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Theme management
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme === 'auto' ? (prefersDark ? 'dark' : 'light') : savedTheme;
+    
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    updateThemeIcons(theme);
+  }
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark');
+    updateThemeIcons(newTheme);
+  }
+
+  function updateThemeIcons(theme: string) {
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    
+    if (theme === 'dark') {
+      sunIcon?.classList.remove('hidden');
+      moonIcon?.classList.add('hidden');
+    } else {
+      sunIcon?.classList.add('hidden');
+      moonIcon?.classList.remove('hidden');
+    }
+  }
+
+  // Set active language based on current URL
+  function setActiveLanguage() {
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    if (currentPath.startsWith('/ar/')) {
+      document.getElementById('lang-ar')?.classList.add('active');
+    } else if (currentPath.startsWith('/he/')) {
+      document.getElementById('lang-he')?.classList.add('active');
+    } else {
+      document.getElementById('lang-en')?.classList.add('active');
+    }
+  }
+
+  // Navigation slide animation function
+  function animateNavigation() {
+    const navContainer = document.querySelector('.nav-container') as HTMLElement;
+    if (!navContainer) return;
+    
+    // Slide up (unmount) with faster animation
+    navContainer.style.transition = 'transform 0.4s ease-out, opacity 0.4s ease-out';
+    navContainer.classList.add('slide-up');
+    navContainer.classList.remove('slide-down');
+  }
+
+  // Fade out page content during language transition
+  function fadeOutPageContent() {
+    const main = document.querySelector('main') as HTMLElement;
+    if (!main) return;
+    
+    // Add fade-out class to main content
+    main.style.transition = 'opacity 0.4s ease-out';
+    main.style.opacity = '0';
+  }
+
+  // Initialize navigation animation on page load
+  function initNavigationAnimation() {
+    const navContainer = document.querySelector('.nav-container');
+    if (!navContainer) return;
+    
+    // Navigation starts hidden by default (CSS), just trigger slide-down
+    setTimeout(() => {
+      navContainer.classList.add('slide-down');
+    }, 200);
+  }
+
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    setActiveLanguage();
+    initNavigationAnimation();
+    
+    // Theme toggle event listener
+    document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+    
+    // Language switcher event listeners with animation
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent immediate navigation
+        
+        const href = (e.target as HTMLAnchorElement).getAttribute('href');
+        if (!href) return;
+        
+        // Trigger both navigation and content animations simultaneously
+        animateNavigation();
+        fadeOutPageContent();
+        
+        // Navigate after content fade completes (400ms + 50ms buffer)
+        setTimeout(() => {
+          window.location.href = href;
+        }, 350);
+      });
+    });
+    
+    // Navigation link event listeners
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = (e.target as HTMLAnchorElement).getAttribute('href');
+        if (href?.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  });
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (localStorage.getItem('theme') === 'auto') {
+      initTheme();
+    }
+  });
+</script>
+
+<style>
+  .lang-btn {
+    background-color: transparent;
+    color: var(--muted-foreground);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  
+  .lang-btn:hover {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  
+  .lang-btn.active {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  
+  #theme-toggle:hover {
+    background-color: var(--secondary);
+  }
+  
+  .nav-link {
+    position: relative;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* RTL support */
+  [dir="rtl"] .nav-link::after {
+    left: auto;
+    right: 0;
+  }
+  
+  [dir="rtl"] .nav-link:hover::after {
+    left: auto;
+    right: 0;
+  }
+  
+  /* Navigation animation styles */
+  .nav-container {
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    /* Start hidden by default */
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  
+  .nav-container.slide-up {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  
+  .nav-container.slide-down {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* Navigation separators */
+  .nav-separator {
+    width: 1px;
+    height: 24px;
+    background-color: var(--border);
+    opacity: 1;
+  }
+</style>

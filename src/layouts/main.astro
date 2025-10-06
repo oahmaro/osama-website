@@ -1,16 +1,37 @@
 ---
 import '../styles/global.css';
+import Navigation from '../components/Navigation.astro';
+
 const { content } = Astro.props;
+const locale = Astro.currentLocale || 'en';
 ---
 
-<html lang="en">
+<html lang={locale} class="dark" dir={locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr'}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
 		<title>{content.title}</title>
+		<script>
+			// Prevent flash of unstyled content
+			(function() {
+				// Set theme
+				const savedTheme = localStorage.getItem('theme') || 'dark';
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = savedTheme === 'auto' ? (prefersDark ? 'dark' : 'light') : savedTheme;
+				document.documentElement.classList.toggle('dark', theme === 'dark');
+			})();
+		</script>
 	</head>
-	<body>
+	<body class="bg-background text-foreground transition-colors duration-300">
+		<style>
+			main {
+				opacity: 1;
+				transition: opacity 0.4s ease-out;
+			}
+		</style>
+		<Navigation />
 		<slot />
 	</body>
 </html>
