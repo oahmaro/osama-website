@@ -120,13 +120,13 @@
   
   /* Custom text selection styles */
   ::selection {
-    background-color: #374151; /* dark gray */
-    color: #d1d5db; /* light gray */
+    background-color: oklch(0.2 0 0); /* very dark black, similar to social button base */
+    color: oklch(1 0 0); /* white text */
   }
   
   ::-moz-selection {
-    background-color: #374151; /* dark gray */
-    color: #d1d5db; /* light gray */
+    background-color: oklch(0.2 0 0); /* very dark black, similar to social button base */
+    color: oklch(1 0 0); /* white text */
   }
   
   /* Custom subtle hover background for experience and language items */
