@@ -19,8 +19,15 @@ const content = {
 			width: 100%;
 			position: fixed;
 			left: 0;
-			background: linear-gradient(to bottom, rgb(0, 0, 0), transparent);
+			background: linear-gradient(to bottom, var(--background), transparent);
 			height: 8vh;
+			transition: opacity 0.6s cubic-bezier(0.2, 0, 0.4, 1);
+		}
+		
+		/* Hide gradient pseudo-elements during theme transition */
+		body.theme-transitioning::before,
+		body.theme-transitioning::after {
+			opacity: 0;
 		}
 
 		body::before {
@@ -33,7 +40,13 @@ const content = {
 		}
 
 		.circle-bg {
-			background-color: #9E9E9E;
+			background-color: var(--muted);
+			border: 1px solid var(--border);
+		}
+		
+		/* Lighter backgrounds for company logos in light theme */
+		:not(.dark) .circle-bg {
+			background-color: var(--secondary);
 		}
 
 		/* Fade animation styles */
@@ -75,7 +88,7 @@ const content = {
 						<!-- Header Section -->
 						<div class="relative z-10 fade-section" id="home" data-delay="200">
 							<div class="space-y-1 p-6">
-								<h1 class="text-2xl text-gray-500 font-medium">
+								<h1 class="text-2xl text-muted-foreground font-medium">
 									مرحباً، أنا أسامة أحمرو
 								</h1>
 								<h2 class="text-3xl lg:text-4xl font-bold text-foreground leading-tight">
@@ -90,7 +103,7 @@ const content = {
 								href="https://github.com/osama-ahmaro" 
 								target="_blank" 
 								rel="noopener noreferrer"
-								class="flex items-center justify-center text-gray-400 hover:text-white transition duration-300 ease-in-out border border-gray-800/80 p-3 rounded-lg bg-black hover:bg-gray-600/20 w-13 h-13"
+								class="flex items-center justify-center text-muted-foreground hover:text-foreground transition duration-300 ease-in-out border border-border p-3 rounded-lg bg-card hover:bg-accent w-13 h-13"
 								aria-label="GitHub"
 							>
 								<FaGithub size={22} />
@@ -100,7 +113,7 @@ const content = {
 								href="https://linkedin.com/in/osama-ahmaro" 
 								target="_blank" 
 								rel="noopener noreferrer"
-								class="flex items-center justify-center text-gray-400 hover:text-white transition duration-300 ease-in-out border border-gray-800/80 p-3 rounded-lg bg-black hover:bg-gray-600/20 w-13 h-13"
+								class="flex items-center justify-center text-muted-foreground hover:text-foreground transition duration-300 ease-in-out border border-border p-3 rounded-lg bg-card hover:bg-accent w-13 h-13"
 								aria-label="LinkedIn"
 							>
 								<FaLinkedin size={22} />
@@ -110,7 +123,7 @@ const content = {
 								href="mailto:osama@example.com" 
 								target="_blank" 
 								rel="noopener noreferrer"
-								class="flex items-center justify-center text-gray-400 hover:text-white transition duration-300 ease-in-out border border-gray-800/80 p-3 rounded-lg bg-black hover:bg-gray-600/20 w-13 h-13"
+								class="flex items-center justify-center text-muted-foreground hover:text-foreground transition duration-300 ease-in-out border border-border p-3 rounded-lg bg-card hover:bg-accent w-13 h-13"
 								aria-label="Gmail"
 							>
 								<BiLogoGmail size={22} />
@@ -120,7 +133,7 @@ const content = {
 						<!-- Description Section -->
 						<div class="relative z-10 mt-8 fade-section" id="about" data-delay="600">
 							<div class="p-6">
-								<p class="text-xl text-gray-500 leading-relaxed max-w-2xl">
+								<p class="text-xl text-muted-foreground leading-relaxed max-w-2xl">
 									مهندس برمجيات متقدم ذو خبرة تزيد عن 6 سنوات في تطوير التطبيقات التي تركز على المستخدم وتتوسع. قمت بقيادة تطوير المنتجات الأساسية التي تم اعتمادها من قبل آلاف المستخدمين. خبير في نظام React والتقنيات الحديثة للويب، شغوف ببناء حلول فعالة وقابلة للتوسع تحقق تأثيراً تجارياً.
 								</p>
 							</div>
@@ -134,7 +147,7 @@ const content = {
 							<!-- Left Side - Header -->
 							<div>
 								<h3 class="text-3xl font-bold text-foreground mb-2">الخبرة</h3>
-								<p class="text-gray-500 text-lg">
+								<p class="text-muted-foreground text-lg">
 									لقد عملت مع بعض من أكثر قادة الصناعة ابتكاراً لمساعدتهم في بناء منتجاتهم عالية الجودة.
 								</p>
 							</div>
@@ -143,57 +156,57 @@ const content = {
 							<div>
 								<div class="space-y-1">
 									<!-- Experience Entry 1 -->
-									<div class="group flex items-start gap-3 py-2 border-b border-gray-800 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
+									<div class="group flex items-start gap-3 py-2 border-b border-border hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
 										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition duration-300 ease-in-out circle-bg">
 											<img src="/mavens.jpeg" alt="Mavens logo" class="w-full h-full object-contain rounded-full" />
 										</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات متقدم</div>
-											<div class="text-gray-500 text-sm">@Mavens، شركة Zynga</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات متقدم</div>
+											<div class="text-muted-foreground text-sm">@Mavens، شركة Zynga</div>
 										</div>
-										<div class="text-gray-500 text-sm">
+										<div class="text-muted-foreground text-sm">
 											Sep 2025 — Present
 										</div>
 									</div>
 
 									<!-- Experience Entry 2 -->
-									<div class="group flex items-start gap-3 py-2 border-b border-gray-800 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
+									<div class="group flex items-start gap-3 py-2 border-b border-border hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
 										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition duration-300 ease-in-out circle-bg">
 											<img src="/khealth.jpeg" alt="KHealth logo" class="w-full h-full object-contain rounded-full" />
 										</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
-											<div class="text-gray-500 text-sm">@KHealth</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
+											<div class="text-muted-foreground text-sm">@KHealth</div>
 										</div>
-										<div class="text-gray-500 text-sm">
+										<div class="text-muted-foreground text-sm">
 											Mar 2022 — Jul 2025
 										</div>
 									</div>
 
 									<!-- Experience Entry 3 -->
-									<div class="group flex items-start gap-3 py-2 border-b border-gray-800 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
+									<div class="group flex items-start gap-3 py-2 border-b border-border hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
 										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition duration-300 ease-in-out circle-bg">
 											<img src="/hyperguest.jpeg" alt="HyperGuest logo" class="w-full h-full object-contain rounded-full" />
 										</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
-											<div class="text-gray-500 text-sm">@HyperGuest</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
+											<div class="text-muted-foreground text-sm">@HyperGuest</div>
 										</div>
-										<div class="text-gray-500 text-sm">
+										<div class="text-muted-foreground text-sm">
 											Jun 2021 — Mar 2022
 										</div>
 									</div>
 
 									<!-- Experience Entry 4 -->
-									<div class="group flex items-start gap-3 py-2 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2">
+									<div class="group flex items-start gap-3 py-2 hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2">
 										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition duration-300 ease-in-out circle-bg">
 											<img src="/sakani.jpeg" alt="Sakani logo" class="w-full h-full object-contain rounded-full" />
 										</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
-											<div class="text-gray-500 text-sm">@Sakani</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">مهندس برمجيات</div>
+											<div class="text-muted-foreground text-sm">@Sakani</div>
 										</div>
-										<div class="text-gray-500 text-sm">
+										<div class="text-muted-foreground text-sm">
 											Apr 2019 — Jun 2021
 										</div>
 									</div>
@@ -208,7 +221,7 @@ const content = {
 							<!-- Left Side - Header -->
 							<div>
 								<h3 class="text-3xl font-bold text-foreground mb-2">اللغات</h3>
-								<p class="text-gray-500 text-lg">
+								<p class="text-muted-foreground text-lg">
 									مهارات التواصل متعددة اللغات التي تساعدني في التواصل مع الفرق والعملاء المتنوعين حول العالم.
 								</p>
 							</div>
@@ -217,35 +230,35 @@ const content = {
 							<div>
 								<div class="space-y-1">
 									<!-- Arabic -->
-									<div class="group flex items-start gap-3 py-2 border-b border-gray-800 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
-										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
-											<span class="text-white font-bold text-sm">ع</span>
-										</div>
+									<div class="group flex items-start gap-3 py-2 border-b border-border hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
+							<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
+								<span class="text-foreground font-bold text-sm">AR</span>
+							</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">العربية</div>
-											<div class="text-gray-500 text-sm">(أم)</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">العربية</div>
+											<div class="text-muted-foreground text-sm">(أم)</div>
 										</div>
 									</div>
 
 									<!-- English -->
-									<div class="group flex items-start gap-3 py-2 border-b border-gray-800 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
-										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
-											<span class="text-white font-bold text-sm">EN</span>
-										</div>
+									<div class="group flex items-start gap-3 py-2 border-b border-border hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2 select-none">
+							<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
+								<span class="text-foreground font-bold text-sm">EN</span>
+							</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">الإنجليزية</div>
-											<div class="text-gray-500 text-sm">(بطلاقة)</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">الإنجليزية</div>
+											<div class="text-muted-foreground text-sm">(بطلاقة)</div>
 										</div>
 									</div>
 
 									<!-- Hebrew -->
-									<div class="group flex items-start gap-3 py-2 hover:bg-gray-800/30 transition duration-200 ease-in-out rounded px-2 -mx-2">
-										<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
-											<span class="text-white font-bold text-sm">ע</span>
-										</div>
+									<div class="group flex items-start gap-3 py-2 hover:bg-accent transition duration-200 ease-in-out rounded px-2 -mx-2">
+							<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden circle-bg">
+								<span class="text-foreground font-bold text-sm">HE</span>
+							</div>
 										<div class="flex-1">
-											<div class="text-gray-400 group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">العبرية</div>
-											<div class="text-gray-500 text-sm">(أساسي)</div>
+											<div class="text-muted-foreground group-hover:text-foreground font-bold text-base transition duration-200 ease-in-out">العبرية</div>
+											<div class="text-muted-foreground text-sm">(أساسي)</div>
 										</div>
 									</div>
 								</div>

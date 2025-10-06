@@ -86,9 +86,57 @@ const t = navTranslations[locale as keyof typeof navTranslations] || navTranslat
     const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark');
-    updateThemeIcons(newTheme);
+    // Create smooth theme transition
+    createThemeTransition(newTheme);
+  }
+
+  function createThemeTransition(newTheme: string) {
+    // Use the exact same fade logic as language switching
+    const main = document.querySelector('main') as HTMLElement;
+    if (!main) {
+      // Fallback if main element not found
+      localStorage.setItem('theme', newTheme);
+      document.documentElement.classList.toggle('dark');
+      updateThemeIcons(newTheme);
+      return;
+    }
+    
+    // Animate navigation slide out (same as language switching)
+    animateNavigation();
+    
+    // Hide gradient pseudo-elements first
+    document.body.classList.add('theme-transitioning');
+    
+    // Fade out content with slower, more elegant timing
+    main.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    main.style.opacity = '0';
+    
+    // Change theme after fade out completes
+    setTimeout(() => {
+      localStorage.setItem('theme', newTheme);
+      document.documentElement.classList.toggle('dark');
+      updateThemeIcons(newTheme);
+      
+      // Fade content back in with new theme
+      setTimeout(() => {
+        main.style.transition = 'opacity 0.6s cubic-bezier(0.2, 0, 0.4, 1)';
+        main.style.opacity = '1';
+        
+        // Slide navigation back in (same as language switching)
+        setTimeout(() => {
+          const navContainer = document.querySelector('.nav-container') as HTMLElement;
+          if (navContainer) {
+            navContainer.classList.add('slide-down');
+            navContainer.classList.remove('slide-up');
+          }
+        }, 200);
+        
+        // Fade in gradient pseudo-elements last
+        setTimeout(() => {
+          document.body.classList.remove('theme-transitioning');
+        }, 150);
+      }, 100);
+    }, 600);
   }
 
   function updateThemeIcons(theme: string) {
@@ -281,4 +329,6 @@ const t = navTranslations[locale as keyof typeof navTranslations] || navTranslat
     background-color: var(--border);
     opacity: 1;
   }
+  
+  
 </style>

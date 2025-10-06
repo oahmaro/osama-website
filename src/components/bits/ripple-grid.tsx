@@ -18,7 +18,7 @@ type Props = {
 
 const RippleGrid: React.FC<Props> = ({
   enableRainbow = false,
-  gridColor = '#ffffff',
+  gridColor,
   rippleIntensity = 0.05,
   gridSize = 10.0,
   gridThickness = 15.0,
@@ -35,6 +35,42 @@ const RippleGrid: React.FC<Props> = ({
   const targetMouseRef = useRef({ x: 0.5, y: 0.5 });
   const mouseInfluenceRef = useRef(0);
   const uniformsRef = useRef<any>(null);
+
+  // Get theme-aware values
+  const getThemeValues = () => {
+    if (gridColor) {
+      // If custom color is provided, use it with default values
+      return {
+        gridColor: gridColor,
+        rippleIntensity: rippleIntensity,
+        opacity: opacity,
+        glowIntensity: glowIntensity,
+        gridThickness: gridThickness
+      };
+    }
+    
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    if (isDark) {
+      // Dark theme - use original values
+      return {
+        gridColor: '#ffffff',
+        rippleIntensity: rippleIntensity,
+        opacity: opacity,
+        glowIntensity: glowIntensity,
+        gridThickness: gridThickness
+      };
+    } else {
+      // Light theme - use subtle but visible values
+      return {
+        gridColor: '#e3e3e3',
+        rippleIntensity: rippleIntensity * 0.4,
+        opacity: opacity * 0.2,
+        glowIntensity: glowIntensity * 0.1,
+        gridThickness: gridThickness * 16
+      };
+    }
+  };
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -158,18 +194,19 @@ void main() {
     gl_FragColor = vec4(color * t * finalFade * opacity, alpha);
 }`;
 
+    const themeValues = getThemeValues();
     const uniforms = {
       iTime: { value: 0 },
       iResolution: { value: [1, 1] },
       enableRainbow: { value: enableRainbow },
-      gridColor: { value: hexToRgb(gridColor) },
-      rippleIntensity: { value: rippleIntensity },
+      gridColor: { value: hexToRgb(themeValues.gridColor) },
+      rippleIntensity: { value: themeValues.rippleIntensity },
       gridSize: { value: gridSize },
-      gridThickness: { value: gridThickness },
+      gridThickness: { value: themeValues.gridThickness },
       fadeDistance: { value: fadeDistance },
       vignetteStrength: { value: vignetteStrength },
-      glowIntensity: { value: glowIntensity },
-      opacity: { value: opacity },
+      glowIntensity: { value: themeValues.glowIntensity },
+      opacity: { value: themeValues.opacity },
       gridRotation: { value: gridRotation },
       mouseInteraction: { value: mouseInteraction },
       mousePosition: { value: [0.5, 0.5] },
@@ -207,6 +244,23 @@ void main() {
       mouseInfluenceRef.current = 0.0;
     };
 
+    // Theme change observer
+    const themeObserver = new MutationObserver(() => {
+      if (uniformsRef.current) {
+        const themeValues = getThemeValues();
+        uniformsRef.current.gridColor.value = hexToRgb(themeValues.gridColor);
+        uniformsRef.current.rippleIntensity.value = themeValues.rippleIntensity;
+        uniformsRef.current.opacity.value = themeValues.opacity;
+        uniformsRef.current.glowIntensity.value = themeValues.glowIntensity;
+        uniformsRef.current.gridThickness.value = themeValues.gridThickness;
+      }
+    });
+
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
     window.addEventListener('resize', resize);
     if (mouseInteraction) {
       containerRef.current.addEventListener('mousemove', handleMouseMove);
@@ -235,6 +289,7 @@ void main() {
     requestAnimationFrame(render);
 
     return () => {
+      themeObserver.disconnect();
       window.removeEventListener('resize', resize);
       if (mouseInteraction && containerRef.current) {
         containerRef.current.removeEventListener('mousemove', handleMouseMove);
@@ -256,15 +311,16 @@ void main() {
         : [1, 1, 1];
     };
 
+    const themeValues = getThemeValues();
     uniformsRef.current.enableRainbow.value = enableRainbow;
-    uniformsRef.current.gridColor.value = hexToRgb(gridColor);
-    uniformsRef.current.rippleIntensity.value = rippleIntensity;
+    uniformsRef.current.gridColor.value = hexToRgb(themeValues.gridColor);
+    uniformsRef.current.rippleIntensity.value = themeValues.rippleIntensity;
     uniformsRef.current.gridSize.value = gridSize;
-    uniformsRef.current.gridThickness.value = gridThickness;
+    uniformsRef.current.gridThickness.value = themeValues.gridThickness;
     uniformsRef.current.fadeDistance.value = fadeDistance;
     uniformsRef.current.vignetteStrength.value = vignetteStrength;
-    uniformsRef.current.glowIntensity.value = glowIntensity;
-    uniformsRef.current.opacity.value = opacity;
+    uniformsRef.current.glowIntensity.value = themeValues.glowIntensity;
+    uniformsRef.current.opacity.value = themeValues.opacity;
     uniformsRef.current.gridRotation.value = gridRotation;
     uniformsRef.current.mouseInteraction.value = mouseInteraction;
     uniformsRef.current.mouseInteractionRadius.value = mouseInteractionRadius;
