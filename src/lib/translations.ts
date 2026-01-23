@@ -13,7 +13,7 @@ export const translations = {
       },
       companies: {
         mavens: "@Mavens, a Zynga company",
-        khealth: "@KHealth", 
+        khealth: "@KHealth",
         hyperguest: "@HyperGuest",
         sakani: "@Sakani"
       }
@@ -23,7 +23,7 @@ export const translations = {
       subtitle: "Multilingual communication skills that help me connect with diverse teams and clients worldwide.",
       levels: {
         native: "(Native)",
-        fluent: "(Fluent)", 
+        fluent: "(Fluent)",
         foundation: "(Foundation)"
       },
       languageNames: {
@@ -47,7 +47,7 @@ export const translations = {
       companies: {
         mavens: "@Mavens، شركة Zynga",
         khealth: "@KHealth",
-        hyperguest: "@HyperGuest", 
+        hyperguest: "@HyperGuest",
         sakani: "@Sakani"
       }
     },
@@ -68,14 +68,14 @@ export const translations = {
   },
   he: {
     greeting: "שלום, אני אוסמה אחמרו",
-    title: "מהנדס תוכנה בכיר",
-    description: "מהנדס תוכנה בכיר עם ניסיון של יותר מ-6 שנים בפיתוח יישומים המתמקדים במשתמש ומתרחבים. הובלתי פיתוח מוצרי ליבה שאומצו על ידי אלפי משתמשים. מומחה במערכת React ובטכנולוגיות אינטרנט מודרניות, נלהב לבנות פתרונות יעילים וניתנים להרחבה שמניבים השפעה עסקית.",
+    title: " מפתח Full Stack בכיר",
+    description: "מפתח Full Stack עם ניסיון של מעל 6 שנים בפיתוח אפליקציות ממוקדות משתמש בסקייל גבוה. הובלתי פיתוח של מוצרים מרכזיים שנמצאים בשימוש של אלפי משתמשים. מומחה React וטכנולוגיות Web מודרניות, עם תשוקה לבניית פתרונות יעילים וסקלביליים שמייצרים אימפקט עסקי.",
     experience: {
       title: "ניסיון",
-      subtitle: "עבדתי עם כמה מהמנהיגים החדשניים ביותר בתעשייה כדי לעזור להם לבנות את המוצרים הטובים ביותר שלהם.",
+      subtitle: "עבדתי עם כמה מהחברות והצוותים החדשניים ביותר בתעשייה, ולקחתי חלק בבניית מוצרים ברמה גבוהה.",
       positions: {
-        senior: "מהנדס תוכנה",
-        fullstack: "מהנדס תוכנה"
+        senior: " מפתח Full Stack",
+        fullstack: " מפתח Full Stack"
       },
       companies: {
         mavens: "@Mavens, חברת Zynga",
@@ -86,11 +86,11 @@ export const translations = {
     },
     languages: {
       title: "שפות",
-      subtitle: "כישורי תקשורת רב-לשוניים שעוזרים לי להתחבר עם צוותים ולקוחות מגוונים ברחבי העולם.",
+      subtitle: "יכולות תקשורת רב־לשוניות שמאפשרות לי לעבוד ביעילות עם צוותים ולקוחות מכל העולם.",
       levels: {
         native: "(שפת אם)",
         fluent: "(שוטף)",
-        foundation: "(יסודי)"
+        foundation: "(בסיסית)"
       },
       languageNames: {
         arabic: "ערבית",
